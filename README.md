@@ -9,8 +9,7 @@ Local envoy in docker:
 `docker start chat-envoy`
 
 Local frontend without docker:  
-`cd front`  
-`npm run start`
+see `front/README.md`
 
 Ports:
 * 3000 - frontend

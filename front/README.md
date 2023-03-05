@@ -6,4 +6,4 @@ You need to install:
 
 Start:
 ### `npm run start`
-it will automatically build the grpc files
+it will automatically build the grpc files (now only for windows)
