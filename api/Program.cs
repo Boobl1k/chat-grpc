@@ -32,6 +32,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddGrpc();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 await using (var scope = app.Services.CreateAsyncScope())
@@ -39,6 +41,8 @@ await using (var scope = app.Services.CreateAsyncScope())
     var context = scope.ServiceProvider.GetService<AppDbContext>();
     await context!.Database.MigrateAsync();
 }
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication().UseAuthorization();
 

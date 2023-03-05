@@ -5,7 +5,7 @@ Local DB in docker:
 Local envoy in docker:  
 `cd envoy`  
 `docker build -t chat-envoy-image .`  
-` docker run -d --name chat-envoy -p 8080:8080 -p 5000:5000 -p 9901:9901 chat-envoy-image`  
+`docker run -d --name chat-envoy -p 8080:8080 -p 5000:5000 -p 9901:9901 chat-envoy-image`  
 `docker start chat-envoy`
 
 Local frontend without docker:  
