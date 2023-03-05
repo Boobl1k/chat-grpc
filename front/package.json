@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@protobuf-ts/grpcweb-transport": "^2.8.2",
+    "@protobuf-ts/plugin": "^2.8.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -23,9 +25,7 @@
     "build": "npm run proto-build | react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "proto-build": "npm run proto-build-auth | npm run proto-build-chat",
-    "proto-build-auth": "mkdir src\\proto\\generated\\auth | protoc --proto_path=./src/proto --js_out=import_style=commonjs,binary:./src/proto/generated/auth --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto/generated/auth auth.proto",
-    "proto-build-chat": "mkdir src\\proto\\generated\\chat | protoc --proto_path=./src/proto --js_out=import_style=commonjs,binary:./src/proto/generated/chat --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto/generated/chat chat.proto"
+    "proto-build": "mkdir src\\proto\\generated | npx protoc --ts_out src/proto/generated/ --ts_opt long_type_string --proto_path src/proto auth.proto chat.proto"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.7"
   }
 }

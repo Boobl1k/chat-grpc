@@ -40,6 +40,7 @@ public class ChatService : Chat.ChatBase
     public override async Task GetMessages(Empty request, IServerStreamWriter<MessageResponse> responseStream,
         ServerCallContext context)
     {
+        var username = context.GetUsername();
         async Task OnNewMessage(Message message)
         {
             try
@@ -50,14 +51,21 @@ public class ChatService : Chat.ChatBase
             catch (Exception e)
             {
                 _logger.LogError("Cannot send message to {username}. Error: {error}",
-                    context.GetUsername(),
+                    username,
                     e.Message);
             }
         }
 
+        _logger.LogInformation("user {username} connected", username);
         _messagesEventContainer.OnNewMessage += OnNewMessage;
-        context.CancellationToken.Register(() => _messagesEventContainer.OnNewMessage -= OnNewMessage);
+        context.CancellationToken.Register(() =>
+        {
+            
+            _logger.LogInformation("user {username} disconnected", username);
+            _messagesEventContainer.OnNewMessage -= OnNewMessage;
+        });
 
-        while (context.CancellationToken.IsCancellationRequested) await Task.Delay(100000000);
+        while (!context.CancellationToken.IsCancellationRequested) await Task.Delay(100000000);
+        _logger.LogInformation("stream ended for {username}", username);
     }
 }

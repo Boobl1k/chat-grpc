@@ -2,6 +2,7 @@ using api;
 using api.Data;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -41,6 +42,12 @@ await using (var scope = app.Services.CreateAsyncScope())
     var context = scope.ServiceProvider.GetService<AppDbContext>();
     await context!.Database.MigrateAsync();
 }
+
+app.Use((ctx, next) =>
+{
+    Console.WriteLine(ctx.Request.GetDisplayUrl());
+    return next();
+});
 
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
