@@ -19,10 +19,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm run proto-build | react-scripts start",
+    "build": "npm run proto-build | react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "proto-build": "npm run proto-build-auth | npm run proto-build-chat",
+    "proto-build-auth": "mkdir src\\proto\\generated\\auth | protoc --proto_path=./src/proto --js_out=import_style=commonjs,binary:./src/proto/generated/auth --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto/generated/auth auth.proto",
+    "proto-build-chat": "mkdir src\\proto\\generated\\chat | protoc --proto_path=./src/proto --js_out=import_style=commonjs,binary:./src/proto/generated/chat --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto/generated/chat chat.proto"
   },
   "eslintConfig": {
     "extends": [
