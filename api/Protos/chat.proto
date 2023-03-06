@@ -15,6 +15,7 @@ message SendMessageRequest {
 }
 
 message MessageResponse {
-  string AuthorUsername = 1;
-  string Text = 2;
+  string id = 1;
+  string AuthorUsername = 2;
+  string Text = 3;
 }

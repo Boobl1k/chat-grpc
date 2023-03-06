@@ -1,4 +1,4 @@
-import IMessage from "../../../entities/IMessage";
+import IMessage from "../../../../entities/IMessage";
 
 interface MessageProps {
     message: IMessage

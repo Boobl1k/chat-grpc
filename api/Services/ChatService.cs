@@ -41,12 +41,13 @@ public class ChatService : Chat.ChatBase
         ServerCallContext context)
     {
         var username = context.GetUsername();
+
         async Task OnNewMessage(Message message)
         {
             try
             {
                 await responseStream.WriteAsync(new MessageResponse
-                    { AuthorUsername = message.Author.Username, Text = message.Text });
+                    { AuthorUsername = message.Author.Username, Text = message.Text, Id = message.Id.ToString() });
             }
             catch (Exception e)
             {
@@ -60,7 +61,6 @@ public class ChatService : Chat.ChatBase
         _messagesEventContainer.OnNewMessage += OnNewMessage;
         context.CancellationToken.Register(() =>
         {
-            
             _logger.LogInformation("user {username} disconnected", username);
             _messagesEventContainer.OnNewMessage -= OnNewMessage;
         });

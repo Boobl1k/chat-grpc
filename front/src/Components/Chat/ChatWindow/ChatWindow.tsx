@@ -1,6 +1,6 @@
 import React from 'react';
 import Message from "./Message/Message";
-import IMessage from "../../entities/IMessage";
+import IMessage from "../../../entities/IMessage";
 
 interface ChatWindowProps {
     chat: IMessage[];
@@ -9,7 +9,7 @@ interface ChatWindowProps {
 export default function ChatWindow({chat}: ChatWindowProps) {
     return (
         <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
-            {chat.map(message => <Message message={message}/>)}
+            {chat.map(message => <Message key={message.id} message={message}/>)}
         </div>
     )
 }
