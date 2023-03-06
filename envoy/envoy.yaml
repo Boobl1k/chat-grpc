@@ -27,7 +27,7 @@ static_resources:
                       routes:
                         - match: { prefix: "/" }
                           route:
-                            cluster: blue
+                            cluster: api
                             timeout: 0s
                       cors:
                         allow_origin_string_match:
@@ -48,12 +48,12 @@ static_resources:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
   clusters:
-    - name: blue
+    - name: api
       connect_timeout: 5s
       type: logical_dns
       http2_protocol_options: {}
       load_assignment:
-        cluster_name: blue
+        cluster_name: api
         endpoints:
           - lb_endpoints:
               - endpoint:
