@@ -26,7 +26,7 @@
     "build": "npm run proto-build | react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "proto-build": "mkdir src\\proto\\generated | npx protoc --ts_out src/proto/generated/ --ts_opt long_type_string --proto_path src/proto auth.proto chat.proto"
+    "proto-build": "mkdir proto-generated | npx protoc --ts_out ./proto-generated/ --ts_opt long_type_string --proto_path ../proto auth.proto chat.proto"
   },
   "eslintConfig": {
     "extends": [
