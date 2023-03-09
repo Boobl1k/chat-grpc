@@ -29,7 +29,8 @@ public class ChatService : Chat.ChatBase
         var message = new Message
         {
             Author = author,
-            Text = request.Text
+            Text = request.Text,
+            SentDateTime = DateTime.Now
         };
         _dbContext.Messages.Add(message);
         await Task.WhenAll(_messagesEventContainer.SendMessage(message), _dbContext.SaveChangesAsync());
@@ -57,6 +58,15 @@ public class ChatService : Chat.ChatBase
             }
         }
 
+        var lastMessages = await _dbContext.Messages
+            .Include(m => m.Author)
+            .OrderByTakeLastToListAsync(m => m.SentDateTime, 20);
+        foreach (var message in lastMessages)
+            await OnNewMessage(message);
+
+        //it's not actually thread-safe. We can lose seme messages sent in this moment
+        //https://github.com/Boobl1k/chat-grpc/issues/14
+
         _logger.LogInformation("user {username} connected", username);
         _messagesEventContainer.OnNewMessage += OnNewMessage;
         context.CancellationToken.Register(() =>
@@ -65,7 +75,7 @@ public class ChatService : Chat.ChatBase
             _messagesEventContainer.OnNewMessage -= OnNewMessage;
         });
 
-        while (!context.CancellationToken.IsCancellationRequested) await Task.Delay(100000000);
+        while (!context.CancellationToken.IsCancellationRequested) await Task.Delay(5000);
         _logger.LogInformation("stream ended for {username}", username);
     }
 }
