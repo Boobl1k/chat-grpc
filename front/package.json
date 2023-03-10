@@ -18,15 +18,20 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
+    "run-script-os": "^1.1.6",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm run proto-build | react-scripts start",
-    "build": "npm run proto-build | react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "proto-build": "mkdir proto-generated | npx protoc --ts_out ./proto-generated/ --ts_opt long_type_string --proto_path ../proto auth.proto chat.proto"
+    "start": "run-script-os",
+    "start:linux": "npm run proto-build; react-scripts start",
+    "start:win32": "npm run proto-build & react-scripts start",
+    "build": "run-script-os",
+    "build:linux": "npm run proto-build; react-scripts build",
+    "build:win32": "npm run proto-build & react-scripts build",
+    "proto-build": "run-script-os",
+    "proto-build:linux": "mkdir src/proto/generated; npx protoc --ts_out ./src/proto/generated/ --ts_opt long_type_string --proto_path ./src/proto auth.proto chat.proto",
+    "proto-build:win32": "mkdir src\\proto\\generated & npx protoc --ts_out ./src/proto/generated/ --ts_opt long_type_string --proto_path ./src/proto auth.proto chat.proto"
   },
   "eslintConfig": {
     "extends": [

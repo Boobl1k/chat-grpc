@@ -37,10 +37,16 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-await using (var scope = app.Services.CreateAsyncScope())
+migrate:
+try
 {
+    await using var scope = app.Services.CreateAsyncScope();
     var context = scope.ServiceProvider.GetService<AppDbContext>();
     await context!.Database.MigrateAsync();
+}
+catch
+{
+    goto migrate;
 }
 
 app.Use((ctx, next) =>
