@@ -1,4 +1,4 @@
-FROM node
+FROM node:19-alpine
 WORKDIR /app
 
 COPY ["package.json", "/"]
@@ -8,4 +8,8 @@ RUN npm install
 
 COPY ["/", "/"]
 
-CMD ["npm", "start"]
+RUN npm run build
+
+ENV NODE_ENV production
+
+CMD ["npx", "serve", "build"]
