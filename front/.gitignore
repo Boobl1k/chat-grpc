@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 
-proto-generated
+/src/proto/generated
