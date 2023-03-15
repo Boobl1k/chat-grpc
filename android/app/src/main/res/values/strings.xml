@@ -3,4 +3,6 @@
     <string name="generate_key">Generate Key</string>
     <string name="move">Move</string>
     <string name="public_key">Public key</string>
+    <string name="input_hint">Write key</string>
+    <string name="check">Check</string>
 </resources>

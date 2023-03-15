@@ -10,4 +10,7 @@
 
     <color name="grey_300">#E0E0E0</color>
     <color name="purple_900">#880e4f</color>
+
+    <color name="rounded_gradient_button_end_color">#061161</color>
+    <color name="rounded_gradient_button_start_color">#780206</color>
 </resources>
