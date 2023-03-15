@@ -5,4 +5,6 @@
     <string name="public_key">Public key</string>
     <string name="input_hint">Write key</string>
     <string name="check">Check</string>
+
+    <string name="app_package_name">com.example.secretgenerator</string>
 </resources>
