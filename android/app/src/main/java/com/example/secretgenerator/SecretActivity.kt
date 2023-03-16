@@ -1,10 +1,10 @@
 package com.example.secretgenerator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 
@@ -22,13 +22,18 @@ class SecretActivity : AppCompatActivity() {
         errorApproveTextView = findViewById(R.id.errorApproveTextView)
         val approveButton: Button = findViewById(R.id.approveButton)
 
+        var containsSymbol = false
         approveTextInput.addTextChangedListener {
-            errorApproveTextView.text = ""
+            if (!containsSymbol) {
+                errorApproveTextView.text = ""
+                containsSymbol = true
+            }
         }
 
         approveButton.setOnClickListener {
             if (approveTextInput.text.isNullOrEmpty()) {
                 errorApproveTextView.text = getString(R.string.error_approve_key)
+                containsSymbol = false
                 return@setOnClickListener
             }
 
