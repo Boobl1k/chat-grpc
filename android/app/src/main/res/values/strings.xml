@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Secret Generator</string>
+    <string name="generate_key">Generate</string>
+    <string name="move">Move</string>
+    <string name="key">Key</string>
+    <string name="input_hint">Approve key</string>
+    <string name="approve">Approve</string>
+
+    <string name="app_package_name">com.example.secretgenerator</string>
+    <string name="error_generate_key">You should generate key!</string>
+    <string name="error_approve_key">You should approve key!</string>
+</resources>
