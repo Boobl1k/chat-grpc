@@ -25,4 +25,14 @@
         <item name="android:layout_marginEnd">72dp</item>
     </style>
 
+    <style name="Theme.SecretGenerator.DefaultTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:layout_marginStart">72dp</item>
+        <item name="android:layout_marginEnd">72dp</item>
+
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
 </resources>

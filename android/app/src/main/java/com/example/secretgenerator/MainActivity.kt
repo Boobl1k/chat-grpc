@@ -41,25 +41,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        keyTextView = findViewById(R.id.keyTextView)
-        errorGenerateTextView = findViewById(R.id.errorGenerateTextView)
-
-        val generateButton: Button = findViewById(R.id.generateButton)
-        val moveButton: Button = findViewById(R.id.moveButton)
-
-        generateButton.setOnClickListener {
-            keyTextView.text = generateSecretKey(8)
-            errorGenerateTextView.text = ""
-        }
-
-        moveButton.setOnClickListener {
-            if (keyTextView.text.isNotEmpty()) {
-                val intent = Intent(this, SecretActivity::class.java)
-                intent.putExtra(KEY, keyTextView.text.toString())
-                resultLauncher.launch(intent)
-                keyTextView.text = ""
-            } else
-                errorGenerateTextView.text = getString(R.string.error_generate_key)
-        }
+//        keyTextView = findViewById(R.id.keyTextView)
+//        errorGenerateTextView = findViewById(R.id.errorGenerateTextView)
+//
+//        val generateButton: Button = findViewById(R.id.generateButton)
+//        val moveButton: Button = findViewById(R.id.moveButton)
+//
+//        generateButton.setOnClickListener {
+//            keyTextView.text = generateSecretKey(8)
+//            errorGenerateTextView.text = ""
+//        }
+//
+//        moveButton.setOnClickListener {
+//            if (keyTextView.text.isNotEmpty()) {
+//                val intent = Intent(this, RegisterActivity::class.java)
+//                intent.putExtra(KEY, keyTextView.text.toString())
+//                resultLauncher.launch(intent)
+//                keyTextView.text = ""
+//            } else
+//                errorGenerateTextView.text = getString(R.string.error_generate_key)
+//        }
     }
 }
