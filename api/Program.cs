@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,17 +38,16 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-migrate:
-try
-{
-    await using var scope = app.Services.CreateAsyncScope();
-    var context = scope.ServiceProvider.GetService<AppDbContext>();
-    await context!.Database.MigrateAsync();
-}
-catch
-{
-    goto migrate;
-}
+await Policy.Handle<Exception>()
+    .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(10),
+        onRetry: (exception, retryTime) =>
+            Console.WriteLine($"Error on migration apply: {exception.Message} | Retry in {retryTime}"))
+    .ExecuteAsync(async () =>
+    {
+        await using var scope = app.Services.CreateAsyncScope();
+        var context = scope.ServiceProvider.GetService<AppDbContext>();
+        await context!.Database.MigrateAsync();
+    });
 
 app.Use((ctx, next) =>
 {
