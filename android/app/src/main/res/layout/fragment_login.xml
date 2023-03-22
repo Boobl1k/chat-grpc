@@ -72,12 +72,12 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/notRegisteredButton"
         style="@style/Theme.SecretGenerator.DefaultButton"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/black"
-        android:text="@string/register"
+        android:text="@string/not_registered"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +89,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="417dp" />
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

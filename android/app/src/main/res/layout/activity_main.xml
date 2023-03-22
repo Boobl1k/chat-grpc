@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/registerTextView"
+        android:id="@+id/justTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
@@ -20,6 +20,16 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/guidelineMain"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        style="@style/Theme.SecretGenerator.DefaultButton"
+        android:background="@drawable/rounded_gradient_button"
+        android:text="Logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineMain"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineMain"
