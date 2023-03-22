@@ -7,7 +7,6 @@ import com.example.secretgenerator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var prefManager: PrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,12 +16,16 @@ class MainActivity : AppCompatActivity() {
 
         prefManager = PrefManager(this)
 
+        initFragment(savedInstanceState)
+
         checkLoggedIn()
+    }
 
-        binding.justTextView.text = "Welcome, ${prefManager.getUsername()}"
-
-        binding.logoutButton.setOnClickListener {
-            logout()
+    private fun initFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, FetchFragment::class.java, null)
+                .commit()
         }
     }
 
@@ -30,11 +33,6 @@ class MainActivity : AppCompatActivity() {
         if (prefManager.isLoggedIn() == false) {
             openAuth()
         }
-    }
-
-    private fun logout() {
-        prefManager.setAuth(false)
-        openAuth()
     }
 
     private fun openAuth() {

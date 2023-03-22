@@ -80,8 +80,9 @@ class LoginFragment : Fragment() {
         val registerFragment = RegisterFragment()
         val transaction: FragmentTransaction =
             activity?.supportFragmentManager!!.beginTransaction()
+        transaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out)
         transaction.replace(R.id.fragment_container_view, registerFragment)
-        transaction.addToBackStack("replacement")
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 }
