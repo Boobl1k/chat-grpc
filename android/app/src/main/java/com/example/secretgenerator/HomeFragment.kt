@@ -19,8 +19,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var prefManager: PrefManager
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var usersRecyclerView: RecyclerView
     private lateinit var usersRecyclerAdapter: UsersRecyclerAdapter
+
+    private lateinit var todosRecyclerView: RecyclerView
+    private lateinit var todosRecyclerAdapter: TodosRecyclerAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,13 +37,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         getUsers()
+        getTodos(0, 20)
 
-        recyclerView = binding.someRecyclerView
-        usersRecyclerAdapter = UsersRecyclerAdapter(ArrayList())
-
-        recyclerView.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = usersRecyclerAdapter
+        initUsersRecycler()
+        initTodosRecycler()
 
         return binding.root
     }
@@ -48,6 +48,44 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initUsersRecycler() {
+        usersRecyclerView = binding.usersRecyclerView
+        usersRecyclerAdapter = UsersRecyclerAdapter(ArrayList())
+
+        usersRecyclerView.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        usersRecyclerView.adapter = usersRecyclerAdapter
+    }
+
+    private fun initTodosRecycler() {
+        todosRecyclerView = binding.todosRecyclerView
+        todosRecyclerAdapter = TodosRecyclerAdapter(ArrayList())
+
+        todosRecyclerView.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        todosRecyclerView.adapter = todosRecyclerAdapter
+    }
+
+    private fun getTodos(start: Int, end: Int) {
+        JsonPlaceholderApi.service.makeRequest(
+            "https://jsonplaceholder.typicode.com/todos?_start=${start}&_end=${end}",
+            object : RequestCallback {
+                override fun onSuccess(response: String) {
+                    val todoList = Gson().fromJson(response, Array<TodoEntity>::class.java)
+                        .toList() as ArrayList<TodoEntity>
+
+                    Handler(Looper.getMainLooper()).post {
+                        todosRecyclerAdapter = TodosRecyclerAdapter(todoList)
+                        todosRecyclerView.adapter = todosRecyclerAdapter
+                    }
+                }
+
+                override fun onFailure(error: String) {
+                    Log.d("CONNECTION ERROR", "Connection error: $error")
+                }
+            })
     }
 
     private fun getUsers() {
@@ -60,7 +98,7 @@ class HomeFragment : Fragment() {
 
                     Handler(Looper.getMainLooper()).post {
                         usersRecyclerAdapter = UsersRecyclerAdapter(userList)
-                        recyclerView.adapter = usersRecyclerAdapter
+                        usersRecyclerView.adapter = usersRecyclerAdapter
                     }
                 }
 
@@ -81,7 +119,7 @@ class HomeFragment : Fragment() {
 
                     Handler(Looper.getMainLooper()).post {
                         usersRecyclerAdapter = UsersRecyclerAdapter(list)
-                        recyclerView.adapter = usersRecyclerAdapter
+                        usersRecyclerView.adapter = usersRecyclerAdapter
                     }
                 }
 
