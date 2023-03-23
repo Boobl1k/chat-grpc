@@ -27,27 +27,18 @@ class HomeFragment : Fragment() {
         prefManager = PrefManager(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
-        binding.logoutButton.setOnClickListener {
-            logout()
-        }
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        StrictMode.setThreadPolicy(ThreadPolicy.Builder().permitAll().build())
 
         binding.urlButton.setOnClickListener {
             Thread {
@@ -97,13 +88,5 @@ class HomeFragment : Fragment() {
         } else {
             binding.justTextView.text = "URL was Empty"
         }
-    }
-
-    private fun logout() {
-        prefManager.setAuth(false)
-
-        val intent = Intent(activity, AuthActivity::class.java)
-        startActivity(intent)
-        activity?.finish()
     }
 }

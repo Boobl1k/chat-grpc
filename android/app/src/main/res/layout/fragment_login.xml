@@ -13,7 +13,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginEnd="72dp"
         android:layout_marginBottom="16dp"
-        android:text="Login"
+        android:text="@string/title_login"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"

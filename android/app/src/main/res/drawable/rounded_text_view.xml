@@ -8,9 +8,8 @@
     <!-- This is the border color -->
     <stroke
         android:width="1dp"
-        android:color="#80000000" />
+        android:color="#CFCFCF" />
 
     <!--- This is the background color -->
     <solid android:color="@color/white" />
-
 </shape>

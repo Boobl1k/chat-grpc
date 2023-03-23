@@ -29,17 +29,13 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-//        replaceFragment(savedInstanceState)
-
         checkLoggedIn()
     }
 
     private fun replaceFragment(fragment: Fragment) {
-//        if (savedInstanceState == null) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
             .commit()
-//        }
     }
 
     private fun checkLoggedIn() {
