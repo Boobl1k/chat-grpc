@@ -1,7 +1,6 @@
 package com.example.secretgenerator
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,18 +8,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.WorkerThread
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.secretgenerator.databinding.FragmentHomeBinding
-import okhttp3.*
-import java.io.IOException
-
+import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var prefManager: PrefManager
-    private val client = OkHttpClient()
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var usersRecyclerAdapter: UsersRecyclerAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,18 +33,16 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        getUsers()
+
+        recyclerView = binding.someRecyclerView
+        usersRecyclerAdapter = UsersRecyclerAdapter(ArrayList())
+
+        recyclerView.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = usersRecyclerAdapter
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.urlButton.setOnClickListener {
-            Thread {
-                runAsync()
-            }.start()
-        }
     }
 
     override fun onDestroyView() {
@@ -52,41 +50,44 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    @WorkerThread
-    private fun runAsync() {
-        var url = "https://jsonplaceholder.typicode.com/todos/1"
-        if (url.isNotEmpty()) {
-            val fetch = OkHttpClient()
+    private fun getUsers() {
+        JsonPlaceholderApi.service.makeRequest(
+            "https://jsonplaceholder.typicode.com/users/",
+            object : RequestCallback {
+                override fun onSuccess(response: String) {
+                    val userList = Gson().fromJson(response, Array<UserEntity>::class.java)
+                        .toList() as ArrayList<UserEntity>
 
-            val request = Request.Builder()
-                .url(url)
-                .build()
-
-            fetch.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    e.printStackTrace()
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    Log.i("Response", "Responsed receive from server")
-                    response.use {
-                        if (!response.isSuccessful)
-                            Log.e("HTTP Error", "Smth didn't load")
-                        else {
-                            val body = response?.body?.string()
-
-                            Handler(Looper.getMainLooper()).post {
-                                binding.justTextView.text = body
-                            }
-
-//                            Log.i("RESPONSE", "$body")
-                        }
+                    Handler(Looper.getMainLooper()).post {
+                        usersRecyclerAdapter = UsersRecyclerAdapter(userList)
+                        recyclerView.adapter = usersRecyclerAdapter
                     }
                 }
-            })
 
-        } else {
-            binding.justTextView.text = "URL was Empty"
-        }
+                override fun onFailure(error: String) {
+                    Log.d("CONNECTION ERROR", "Connection error: $error")
+                }
+            })
+    }
+
+    private fun getUser(id: Int) {
+        JsonPlaceholderApi.service.makeRequest(
+            "https://jsonplaceholder.typicode.com/users/$id",
+            object : RequestCallback {
+                override fun onSuccess(response: String) {
+                    val list = ArrayList<UserEntity>()
+                    val user = Gson().fromJson(response, UserEntity::class.java)
+                    list.add(user)
+
+                    Handler(Looper.getMainLooper()).post {
+                        usersRecyclerAdapter = UsersRecyclerAdapter(list)
+                        recyclerView.adapter = usersRecyclerAdapter
+                    }
+                }
+
+                override fun onFailure(error: String) {
+                    Log.d("CONNECTION ERROR", "Connection error: $error")
+                }
+            })
     }
 }
