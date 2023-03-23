@@ -3,6 +3,7 @@ package com.example.secretgenerator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.example.secretgenerator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,17 +17,29 @@ class MainActivity : AppCompatActivity() {
 
         prefManager = PrefManager(this)
 
-        initFragment(savedInstanceState)
+        if (savedInstanceState == null)
+            replaceFragment(HomeFragment())
+
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homePage -> replaceFragment(HomeFragment())
+                R.id.profilePage -> replaceFragment(ProfileFragment())
+                else -> replaceFragment(HomeFragment())
+            }
+            true
+        }
+
+//        replaceFragment(savedInstanceState)
 
         checkLoggedIn()
     }
 
-    private fun initFragment(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container_view, FetchFragment::class.java, null)
-                .commit()
-        }
+    private fun replaceFragment(fragment: Fragment) {
+//        if (savedInstanceState == null) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .commit()
+//        }
     }
 
     private fun checkLoggedIn() {

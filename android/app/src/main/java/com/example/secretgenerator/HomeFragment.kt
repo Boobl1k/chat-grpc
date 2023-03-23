@@ -5,21 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.WorkerThread
 import androidx.fragment.app.Fragment
-import com.example.secretgenerator.databinding.FragmentFetchBinding
+import com.example.secretgenerator.databinding.FragmentHomeBinding
 import okhttp3.*
 import java.io.IOException
 
 
-class FetchFragment : Fragment() {
-    private var _binding: FragmentFetchBinding? = null
+class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var prefManager: PrefManager
     private val client = OkHttpClient()
@@ -37,7 +35,7 @@ class FetchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFetchBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
         binding.logoutButton.setOnClickListener {
