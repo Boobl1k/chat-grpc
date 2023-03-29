@@ -1,65 +1,52 @@
 package com.example.secretgenerator
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-
-fun generateSecretKey(length: Int): String {
-    val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-
-    return List(length) { charset.random() }
-        .joinToString("")
-}
+import androidx.fragment.app.Fragment
+import com.example.secretgenerator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var keyTextView: TextView
-    private lateinit var errorGenerateTextView: TextView
-
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            when (result.resultCode) {
-                Activity.RESULT_OK -> {
-                    val key = result.data?.getStringExtra(KEY)
-                    Toast.makeText(this@MainActivity, key, Toast.LENGTH_SHORT).show()
-                }
-                Activity.RESULT_CANCELED -> {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "ERROR: WRONG KEY PROVIDED",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var prefManager: PrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        keyTextView = findViewById(R.id.keyTextView)
-        errorGenerateTextView = findViewById(R.id.errorGenerateTextView)
+        prefManager = PrefManager(this)
 
-        val generateButton: Button = findViewById(R.id.generateButton)
-        val moveButton: Button = findViewById(R.id.moveButton)
+        if (savedInstanceState == null)
+            replaceFragment(HomeFragment())
 
-        generateButton.setOnClickListener {
-            keyTextView.text = generateSecretKey(8)
-            errorGenerateTextView.text = ""
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homePage -> replaceFragment(HomeFragment())
+                R.id.profilePage -> replaceFragment(ProfileFragment())
+                else -> replaceFragment(HomeFragment())
+            }
+            true
         }
 
-        moveButton.setOnClickListener {
-            if (keyTextView.text.isNotEmpty()) {
-                val intent = Intent(this, SecretActivity::class.java)
-                intent.putExtra(KEY, keyTextView.text.toString())
-                resultLauncher.launch(intent)
-                keyTextView.text = ""
-            } else
-                errorGenerateTextView.text = getString(R.string.error_generate_key)
+        checkLoggedIn()
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .commit()
+    }
+
+    private fun checkLoggedIn() {
+        if (prefManager.isLoggedIn() == false) {
+            openAuth()
         }
+    }
+
+    private fun openAuth() {
+        val intent = Intent(this, AuthActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
