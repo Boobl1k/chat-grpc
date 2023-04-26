@@ -46,3 +46,14 @@ services:
       - POSTGRES_PASSWORD=testPassword
     ports:
       - 5432:5432
+  
+  mybook:
+    build:
+      context: ./MyBook
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5100
+    ports:
+      - 5100:5100
+    depends_on:
+      - db
