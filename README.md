@@ -33,3 +33,5 @@ they have to comment the thread and give more explanations about the problem
 to it in comment or makes changes in current PR 
 (and also comments about new changes under the thread).
 The second way is better
+
+# [Figma](https://www.figma.com/file/Jj5nXUF5uwNzeBW6aiURVK/chat-grpc?node-id=0%3A1&t=35oIPGSwOlcMAtdp-1)
