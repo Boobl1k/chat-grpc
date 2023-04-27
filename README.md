@@ -17,6 +17,7 @@ for now you need to change hostname in appDbContext
 * 9901 - envoy admin panel
 * 8080 - envoy main
 * 5432 - DB
+* 5100 - mybook api
 
 
 
