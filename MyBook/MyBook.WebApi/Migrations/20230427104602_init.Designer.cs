@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace PostgresMigrations.Migrations
+namespace MyBook.WebApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230426203535_qwe")]
-    partial class qwe
+    [Migration("20230427104602_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -348,21 +348,21 @@ namespace PostgresMigrations.Migrations
                         new
                         {
                             Id = new Guid("6f17d951-3ad5-49f9-b333-2a37e367333d"),
-                            ConcurrencyStamp = "2e3f84d5-bfd6-4369-a29e-7872e4aa5848",
+                            ConcurrencyStamp = "7621e4a6-3e00-4312-9b38-c4f1aac41133",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("12d534a7-4535-4819-8704-bcfd7553ab46"),
-                            ConcurrencyStamp = "ff8add65-b194-4d34-b33d-c7124e704409",
+                            ConcurrencyStamp = "20de9489-3f02-4254-8e6c-a4f8765b694f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = new Guid("6dc02633-d464-4f86-8575-4cb190d670a6"),
-                            ConcurrencyStamp = "01bd7732-9545-4bbd-be08-3de03de48f01",
+                            ConcurrencyStamp = "ffb436aa-4d32-4700-a749-1fcd8ecbac79",
                             Name = "UserSub",
                             NormalizedName = "USERSUB"
                         });
@@ -512,6 +512,10 @@ namespace PostgresMigrations.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
@@ -562,9 +566,10 @@ namespace PostgresMigrations.Migrations
                             LockoutEnabled = true,
                             Name = "Admin",
                             NormalizedUserName = "ADMIN@MYBOOK.RU",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKHiER8mnYBoUa3hf25jmeypz2BfNjVYWnZ/+ksDqMdivJxcz497OiLw4VEqfFfz/w==",
+                            Password = "qwe123QWE_",
+                            PasswordHash = "AQAAAAEAACcQAAAAELSTfOCYLX3oJCBkI154Sns5KrJIALAg3ZzpmoYlrVnylel1gXI05S1C+NaUc/7IvQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06f9355a-4751-4f71-bba0-1074cf24fc88",
+                            SecurityStamp = "78ed8d9d-ccb6-4de7-808f-1fbd4e69eefd",
                             SubDateStart = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SubId = 4,
                             TwoFactorEnabled = false,
@@ -581,9 +586,10 @@ namespace PostgresMigrations.Migrations
                             LockoutEnabled = true,
                             Name = "User",
                             NormalizedUserName = "USER@MYBOOK.RU",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPouu1v8F0sLDnQRBj3yoP4Yg/LE1w3b++XmtiP5TuNDW9ptBMNZtcVTGSkzlBCGkw==",
+                            Password = "qwe123QWE_",
+                            PasswordHash = "AQAAAAEAACcQAAAAEC0NdHk56oTZH7Z3lOES4ImiSs9qDTt/94kDZ3yM3e60r0SY8YIHFniJA5SNGSFT9g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2a2d5b49-7da4-45b7-baaf-0e4ad7e038bf",
+                            SecurityStamp = "a42f53d6-7ac1-4088-964f-7f9761b77ecd",
                             SubDateStart = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SubId = 1,
                             TwoFactorEnabled = false,

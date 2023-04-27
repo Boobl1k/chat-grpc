@@ -35,7 +35,8 @@ public partial class Seeds
                 LastName = "Admin",
                 Name = "Admin",
                 SubId = 4,
-                SubDateStart = default(DateTime)
+                SubDateStart = default(DateTime),
+                Password = "qwe123QWE_"
             });
             
             b.HasData(new
@@ -58,7 +59,8 @@ public partial class Seeds
                 LastName = "User",
                 Name = "User",
                 SubId = 1,
-                SubDateStart = default(DateTime)
+                SubDateStart = default(DateTime),
+                Password = "qwe123QWE_"
             });
         });
     }

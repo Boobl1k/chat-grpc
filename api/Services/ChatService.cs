@@ -11,29 +11,31 @@ namespace api.Services;
 public class ChatService : Chat.ChatBase
 {
     private readonly AppDbContext _dbContext;
+    private readonly MyBookContext _myBookContext;
     private readonly MessagesEventContainer _messagesEventContainer;
     private readonly ILogger<ChatService> _logger;
 
     public ChatService(AppDbContext dbContext, MessagesEventContainer messagesEventContainer,
-        ILogger<ChatService> logger)
+        ILogger<ChatService> logger, MyBookContext myBookContext)
     {
         _dbContext = dbContext;
         _messagesEventContainer = messagesEventContainer;
         _logger = logger;
+        _myBookContext = myBookContext;
     }
 
     [Authorize]
     public override async Task<Empty> SendMessage(SendMessageRequest request, ServerCallContext context)
     {
-        var author = await _dbContext.Users.FirstAsync(u => u.Username == context.GetUsername());
+        var author = await _myBookContext.Users.FirstAsync(u => u.UserName == context.GetUsername());
         var message = new Message
         {
-            Author = author,
+            Author = author.Id,
             Text = request.Text,
             SentDateTime = DateTime.Now
         };
         _dbContext.Messages.Add(message);
-        await Task.WhenAll(_messagesEventContainer.SendMessage(message), _dbContext.SaveChangesAsync());
+        await Task.WhenAll(_messagesEventContainer.SendMessage(message, author), _dbContext.SaveChangesAsync());
         return new Empty();
     }
 
@@ -43,12 +45,12 @@ public class ChatService : Chat.ChatBase
     {
         var username = context.GetUsername();
 
-        async Task OnNewMessage(Message message)
+        async Task OnNewMessage(Message message, User author)
         {
             try
             {
                 await responseStream.WriteAsync(new MessageResponse
-                    { AuthorUsername = message.Author.Username, Text = message.Text, Id = message.Id.ToString() });
+                    { AuthorUsername = author.UserName, Text = message.Text, Id = message.Id.ToString() });
             }
             catch (Exception e)
             {
@@ -59,10 +61,9 @@ public class ChatService : Chat.ChatBase
         }
 
         var lastMessages = await _dbContext.Messages
-            .Include(m => m.Author)
-            .OrderByTakeLastToListAsync(m => m.SentDateTime, 20);
-        foreach (var message in lastMessages)
-            await OnNewMessage(message);
+            .OrderByTakeLastToListAsync(m => m.SentDateTime, 20); 
+        foreach (var pair in lastMessages.Select(m => new { Message = m, Author = _myBookContext.Users.First(u => u.Id == m.Author) }))
+            await OnNewMessage(pair.Message, pair.Author);
 
         //it's not actually thread-safe. We can lose seme messages sent in this moment
         //https://github.com/Boobl1k/chat-grpc/issues/14

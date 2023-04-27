@@ -12,15 +12,16 @@ public class MessagesEventContainer
     /// <para>Event called in <see cref="SendMessage"/> in order to send message to all subscribers</para>
     /// <para>Thread safe (at least when we don't add custom `add`, `remove` handlers)</para>
     /// </summary>
-    public event Func<Message, Task>? OnNewMessage;
+    public event Func<Message, User, Task>? OnNewMessage;
 
     /// <summary>
     /// Method just calls <see cref="OnNewMessage"/> event
     /// </summary>
     /// <param name="message">message to send</param>
-    public async Task SendMessage(Message message)
+    /// <param name="author">message author</param>
+    public async Task SendMessage(Message message, User author)
     {
         if (OnNewMessage is { })
-            await OnNewMessage.Invoke(message);
+            await OnNewMessage.Invoke(message, author);
     }
 }

@@ -1,8 +1,8 @@
 import {useRef} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {authClient} from '../../clients';
 import {TOKEN_KEY} from "../../hooks/authMeta";
-import {CHAT_ROUTE, REGISTER_ROUTE} from "../../routes";
+import {CHAT_ROUTE} from "../../routes";
 
 export default function LoginForm() {
     const username = useRef<HTMLInputElement>(null);
@@ -23,6 +23,5 @@ export default function LoginForm() {
         <input type={"password"} ref={password} placeholder={"password"}/>
         <input type={"submit"} onClick={login} value={"Login"}/>
         <br/>
-        <Link to={REGISTER_ROUTE}>Don't have an account? Register</Link>
     </>
 }

@@ -117,7 +117,8 @@ public class AuthController : Controller
                 Image = img,
                 // Image = Convert.ToBase64String(await System.IO.File.ReadAllBytesAsync("wwwroot/img/user.png")),
                 EmailConfirmed = false,
-                LockoutEnabled = false
+                LockoutEnabled = false,
+                Password = model.password
             };
 
             var result = await _userManager.CreateAsync(user, model.password);

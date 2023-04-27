@@ -7,7 +7,6 @@ package auth;
 
 service Auth {
   rpc Login (UserCredentials) returns (AuthToken);
-  rpc Register (UserCredentials) returns (AuthToken);
   rpc Me(google.protobuf.Empty) returns (MeResponse);
 }
 

@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace api.Entities;
 
-public class User
+public class User : IdentityUser<Guid>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public required string Username { get; set; }
-    public required string Password { get; set; }
+    public string Password { get; set; } = null!;
 }

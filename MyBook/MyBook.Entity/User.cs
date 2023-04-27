@@ -15,4 +15,5 @@ public class User : IdentityUser<Guid>
     public List<Book> FavoriteBooks { get; set; } = null!;
     
     public virtual ICollection<UserRole> UserRoles { get; set; }
+    public string Password { get; set; } = null!;
 }

@@ -14,24 +14,12 @@ namespace api.Services;
 public class AuthService : Auth.AuthBase
 {
     private readonly AppDbContext _dbContext;
+    private readonly MyBookContext _myBookContext;
 
-    public AuthService(AppDbContext dbContext) =>
-        _dbContext = dbContext;
-
-    public override async Task<AuthToken> Register(UserCredentials request, ServerCallContext context)
+    public AuthService(AppDbContext dbContext, MyBookContext myBookContext)
     {
-        if (await FindUserOrNull(request) is { })
-            throw new Exception($"user with username {request.Username} already exists");
-
-        var user = new User
-        {
-            Username = request.Username,
-            Password = request.Password
-        };
-        _dbContext.Users.Add(user);
-        await _dbContext.SaveChangesAsync();
-
-        return CreateToken(request.Username);
+        _dbContext = dbContext;
+        _myBookContext = myBookContext;
     }
 
     public override async Task<AuthToken> Login(UserCredentials request, ServerCallContext context)
@@ -46,16 +34,16 @@ public class AuthService : Auth.AuthBase
     [Authorize]
     public override async Task<MeResponse> Me(Empty request, ServerCallContext context)
     {
-        var user = await _dbContext.Users.FirstAsync(u => u.Username == context.GetUsername());
+        var user = await _myBookContext.Users.FirstAsync(u => u.UserName == context.GetUsername());
 
         return new MeResponse
         {
-            Username = user.Username
+            Username = user.UserName
         };
     }
 
     private async Task<User?> FindUserOrNull(UserCredentials userCredentials) =>
-        await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == userCredentials.Username);
+        await _myBookContext.Users.FirstOrDefaultAsync(u => u.UserName == userCredentials.Username);
 
     private static AuthToken CreateToken(string username)
     {

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyBook.DataAccess;
 using MyBook.WebApi.Services;
+using Polly;
 
 namespace MyBook.WebApi;
 
@@ -110,13 +111,18 @@ public class Startup
     public static void RunApp(string[] args)
     {
         var app = CreateHostBuilder(args).Build();
-        
-        {
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationContext>();
-            context!.Database.Migrate();
-        }
-        
+
+        Policy.Handle<Exception>()
+            .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(10),
+                onRetry: (exception, retryTime) =>
+                    Console.WriteLine($"Error on migration apply: {exception.Message} | Retry in {retryTime}"))
+            .ExecuteAsync(async () =>
+            {
+                using var scope = app.Services.CreateScope();
+                var context = scope.ServiceProvider.GetService<ApplicationContext>();
+                await context!.Database.MigrateAsync();
+            }).GetAwaiter().GetResult();
+
         app.Run();
     }
 }
