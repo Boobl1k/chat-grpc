@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyBook.DataAccess;
+using MyBook.WebApi.GraphQl;
 using MyBook.WebApi.Services;
 using Polly;
 
@@ -77,6 +78,9 @@ public class Startup
         );
 
         services.AddScoped<AuthorizeManager>();
+
+        services.AddGraphQLServer()
+            .AddQueryType<BooksQuery>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -87,14 +91,18 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
         app
             .UseStaticFiles()
             .UseRouting()
             .UseAuthentication()
             .UseAuthorization()
             .UseCors()
-            .UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+            .UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapGraphQL((PathString)"/graphql");
+            });
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args)

@@ -5,7 +5,7 @@ namespace MyBook.Models;
 
 public class RegisterViewModel
 {
-    [DefaultValue("password")]
+    [System.ComponentModel.DefaultValue("password")]
     public string grant_type { get; set; }
     
     public string username { get; set; } = null!;
