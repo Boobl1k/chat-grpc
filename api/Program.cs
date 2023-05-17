@@ -1,3 +1,4 @@
+using System.Text;
 using api;
 using api.Data;
 using api.Services;
@@ -31,6 +32,12 @@ builder.Services.AddAuthentication(x =>
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddDbContext<MyBookContext>(options =>
+{
+    options.UseNpgsql("Host=db;Port=5432;Username=testUser;Password=testPassword;Database=mybook");
+    options.UseOpenIddict();
+});
 
 builder.Services.AddGrpc();
 
