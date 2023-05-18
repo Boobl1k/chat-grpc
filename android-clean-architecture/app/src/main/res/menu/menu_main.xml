@@ -2,9 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android_clean_architecture.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/MyBookFragment"
+        android:icon="@drawable/ic_mybook"
+        android:title="@string/mybook" />
+
+    <item
+        android:id="@+id/ChatFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="@string/chat" />
+
 </menu>

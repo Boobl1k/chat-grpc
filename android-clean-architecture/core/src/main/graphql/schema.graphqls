@@ -1,0 +1,91 @@
+schema {
+  query: BooksQuery
+}
+
+type BooksQuery {
+  booksList: [Book!]!
+}
+
+type Book {
+  id: UUID!
+  title: String!
+  author: Author!
+  description: String!
+  genre: String!
+  subType: Int!
+  image: String!
+  year: Int!
+  rating: Float!
+  addedDate: DateTime!
+  users: [User!]!
+}
+
+scalar UUID
+
+type Author {
+  id: UUID!
+  fullName: String!
+  image: String!
+  description: String!
+  books: [Book!]!
+}
+
+"""
+The `DateTime` scalar represents an ISO-8601 compliant date time type.
+"""
+scalar DateTime
+
+type User {
+  name: String!
+  lastName: String!
+  sub: Subscription!
+  subId: Int!
+  subDateStart: DateTime!
+  image: String!
+  favoriteBooks: [Book!]!
+  userRoles: [UserRole!]!
+  password: String!
+  id: UUID!
+  userName: String
+  normalizedUserName: String
+  email: String
+  normalizedEmail: String
+  emailConfirmed: Boolean!
+  passwordHash: String
+  securityStamp: String
+  concurrencyStamp: String
+  phoneNumber: String
+  phoneNumberConfirmed: Boolean!
+  twoFactorEnabled: Boolean!
+  lockoutEnd: DateTime
+  lockoutEnabled: Boolean!
+  accessFailedCount: Int!
+}
+
+type UserRole {
+  user: User!
+  role: Role!
+  userId: UUID!
+  roleId: UUID!
+}
+
+type Subscription {
+  id: Int!
+  price: Decimal!
+  name: String!
+  duration: Int!
+  description: String!
+}
+
+"""
+The built-in `Decimal` scalar type.
+"""
+scalar Decimal
+
+type Role {
+  userRoles: [UserRole!]!
+  id: UUID!
+  name: String
+  normalizedName: String
+  concurrencyStamp: String
+}

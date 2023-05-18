@@ -1,0 +1,13 @@
+query BooksQuery() {
+  booksList {
+    id,
+    title,
+    author {
+      id,
+      fullName,
+      description
+    },
+    description,
+    genre
+  }
+}
