@@ -2,6 +2,7 @@ package com.example.core
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,6 @@ abstract class FragmentBase<VBinding : ViewBinding, ViewModelClass : ViewModel>(
 
     protected lateinit var binding: VBinding
     protected abstract fun getViewBinding(): VBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

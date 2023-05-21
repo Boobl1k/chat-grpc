@@ -7,7 +7,7 @@ import com.example.data.use_case.TodoUseCase
 import com.example.domain.dto.TodoData
 import kotlinx.coroutines.launch
 
-class FirstViewModel : ViewModel() {
+class ChatViewModel : ViewModel() {
 
     private val todoUseCase = TodoUseCase()
     val todoDataMutable = MutableLiveData<TodoData?>()

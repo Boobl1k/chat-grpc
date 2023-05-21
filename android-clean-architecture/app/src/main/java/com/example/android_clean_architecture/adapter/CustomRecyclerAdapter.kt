@@ -7,14 +7,20 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_clean_architecture.R
-import com.example.android_clean_architecture.view_model.SecondViewModel
+import com.example.android_clean_architecture.view_model.MyBookViewModel
 
 class CustomRecyclerAdapter(
-    private val viewModel: SecondViewModel,
+    private val viewModel: MyBookViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
 
+    private var itemCount = 0
+    init {
+        viewModel.booksDataMutable.observe(lifecycleOwner) {
+            if(it != null) itemCount = it.size
+        }
+    }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.textView)
     }
@@ -25,11 +31,11 @@ class CustomRecyclerAdapter(
         )
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        viewModel.getTodoData(position).observe(lifecycleOwner) {
+        viewModel.booksDataMutable.observe(lifecycleOwner) {
             if (it == null) holder.textView.text = "Loading"
-            else holder.textView.text = it.title
+            else holder.textView.text = it[position].title
         }
     }
 
-    override fun getItemCount() = 10000
+    override fun getItemCount() = itemCount
 }

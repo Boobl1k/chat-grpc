@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id("com.apollographql.apollo3") version "3.8.1"
 }
 
 android {
@@ -37,10 +38,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation project(path: ':domain')
     implementation project(path: ':core')
+    implementation "com.apollographql.apollo3:apollo-runtime:3.8.1"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+}
+
+apollo {
+    service('service') {
+        packageName.set('com.example.data')
+    }
 }
