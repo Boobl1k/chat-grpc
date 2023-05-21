@@ -15,7 +15,7 @@ class CustomRecyclerAdapter(
 ) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
 
-    private var itemCount = 0
+    private var itemCount = 1
     init {
         viewModel.booksDataMutable.observe(lifecycleOwner) {
             if(it != null) itemCount = it.size
