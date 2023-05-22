@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "api";
+
+option java_multiple_files = true;
+option java_package = "com.example.android_clean_architecture";
+option java_outer_classname = "ChatProto";
+option objc_class_prefix = "GRT";
+
+import "google/protobuf/empty.proto";
+package chat;
+
+service Chat {
+  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
+  rpc GetMessages(google.protobuf.Empty) returns (stream MessageResponse);
+}
+
+message SendMessageRequest {
+  string Text = 1;
+}
+
+message MessageResponse {
+  string id = 1;
+  string AuthorUsername = 2;
+  string Text = 3;
+}
