@@ -6,33 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ChatFragment">
 
-    <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="2"
+        tools:listitem="@layout/chat_message_view" />
+
+    <EditText
+        android:id="@+id/messageEditText"
+        android:layout_width="371dp"
+        android:layout_height="37dp"
+        android:importantForAutofill="no"
+        android:inputType="textShortMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/messageSubmitButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:id="@+id/messageSubmitButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/resultTextView" />
-
-    <Button
-        android:id="@+id/load_button_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/load_one"
-        app:layout_constraintBottom_toBottomOf="@id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/messageEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "api";
+
+option java_multiple_files = true;
+option java_package = "com.example.android_clean_architecture";
+option java_outer_classname = "AuthProto";
+option objc_class_prefix = "GRT";
+
+import "google/protobuf/empty.proto";
+package auth;
+
+service Auth {
+  rpc Login (UserCredentials) returns (AuthToken);
+  rpc Me(google.protobuf.Empty) returns (MeResponse);
+}
+
+message UserCredentials {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthToken {
+  string Token = 1;
+}
+
+message MeResponse {
+  string Username = 1;
+}

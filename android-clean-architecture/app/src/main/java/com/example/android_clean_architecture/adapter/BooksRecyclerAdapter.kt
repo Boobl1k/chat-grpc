@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android_clean_architecture.R
 import com.example.android_clean_architecture.view_model.MyBookViewModel
 
-class CustomRecyclerAdapter(
+class BooksRecyclerAdapter(
     private val viewModel: MyBookViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) :
-    RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<BooksRecyclerAdapter.MyViewHolder>() {
 
     private var itemCount = 1
     init {
@@ -22,12 +22,12 @@ class CustomRecyclerAdapter(
         }
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.textView)
+        val textView: TextView = itemView.findViewById(R.id.book_title)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
         MyViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.todo_list_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.books_list_item, parent, false)
         )
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

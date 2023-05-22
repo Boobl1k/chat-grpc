@@ -18,16 +18,38 @@ class AuthFragment : FragmentBase<FragmentAuthBinding, AuthViewModel>() {
     override fun observeData() {
         super.observeData()
 
+        //адель сам поправишь понял?
+        var success = false
         viewModel.myBookTokenDataMutable.observe(this) {
-            if (it == null) Toast.makeText(
-                context,
-                "Wrong username or password",
-                Toast.LENGTH_SHORT
-            ).show()
-            else {
+            if (it == null) {
+                Toast.makeText(
+                    context,
+                    "Wrong username or password",
+                    Toast.LENGTH_SHORT
+                ).show()
+                success = false
+            } else {
                 val sp = activity?.getPreferences(Context.MODE_PRIVATE)
                 sp?.edit()?.putString(SharedPreferencesKeys.myBookToken, it.access_token)?.commit()
-                findNavController().navigate(R.id.action_AuthFragment_to_MyBookFragment)
+                if (success)
+                    findNavController().navigate(R.id.action_AuthFragment_to_MyBookFragment)
+                else success = true
+            }
+        }
+        viewModel.chatTokenDataMutable.observe(this) {
+            if (it == null) {
+                Toast.makeText(
+                    context,
+                    "Wrong username or password",
+                    Toast.LENGTH_SHORT
+                ).show()
+                success = false
+            } else {
+                val sp = activity?.getPreferences(Context.MODE_PRIVATE)
+                sp?.edit()?.putString(SharedPreferencesKeys.chatToken, it.token)?.commit()
+                if (success)
+                    findNavController().navigate(R.id.action_AuthFragment_to_MyBookFragment)
+                else success = true
             }
         }
     }
@@ -37,7 +59,8 @@ class AuthFragment : FragmentBase<FragmentAuthBinding, AuthViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(SharedPreferencesKeys.myBookToken, "") ?: ""
+        val token = activity?.getPreferences(Context.MODE_PRIVATE)
+            ?.getString(SharedPreferencesKeys.myBookToken, "") ?: ""
         if (token.isNotEmpty())
             findNavController().navigate(R.id.action_AuthFragment_to_MyBookFragment)
 
