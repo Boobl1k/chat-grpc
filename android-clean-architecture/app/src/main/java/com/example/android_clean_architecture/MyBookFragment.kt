@@ -22,7 +22,7 @@ class MyBookFragment : FragmentBase<FragmentMyBookBinding, MyBookViewModel>() {
 
             val recyclerView = binding.recyclerView
             recyclerView.layoutManager = LinearLayoutManager(this.context)
-            recyclerView.adapter = BooksRecyclerAdapter(viewModel, this)
+            recyclerView.adapter = BooksRecyclerAdapter(viewModel, this, token, context)
         }
     }
 

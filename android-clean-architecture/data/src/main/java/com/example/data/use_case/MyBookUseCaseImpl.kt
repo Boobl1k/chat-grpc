@@ -18,4 +18,10 @@ class MyBookUseCaseImpl : MyBookUseCase {
         myBookGraphQlClient.query(BooksQuery()).addHttpHeader("Authorization", "Bearer $token").execute().data?.booksList?.map {
             MyBookBooksData(it.id.toString(), it.title, MyBookAuthor(it.author.id.toString(), it.author.fullName, it.author.description), it.description, it.genre)
         }
+
+    override suspend fun getBookDetails(token: String, id: String) =
+        DataSources.myBookService.getBookDetails("Bearer $token", id).awaitResponse().run {
+            if(isSuccessful) body() else null
+        }
+
 }

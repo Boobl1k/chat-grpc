@@ -67,17 +67,6 @@ public class CatalogController : Controller
 
         if (book is null)
             return NotFound(new {Error = "Unexpected id"});
-        
-        
-
-        if (book.SubType == 1)
-        {
-            if (!await _auth.HasRole(HttpContext,"UserSub") && !await _auth.HasRole(HttpContext,"Admin"))
-            {
-                return StatusCode(403);
-            }
-            
-        }
 
         return Ok(book);
     }

@@ -12,10 +12,19 @@ class MyBookViewModel : ViewModel() {
 
     private val useCase: MyBookUseCase = MyBookUseCaseImpl()
     val booksDataMutable = MutableLiveData<List<MyBookBooksData>>()
+    val bookDetailsDataMutableMap = mutableMapOf<String, MutableLiveData<MyBookBooksData>>()
 
     fun getBooks(token: String) {
         viewModelScope.launch {
             booksDataMutable.postValue(useCase.getBooks(token))
+        }
+    }
+
+    fun getBookDetails(token: String, id: String) {
+        val mutableData = MutableLiveData<MyBookBooksData>()
+        bookDetailsDataMutableMap[id] = mutableData
+        viewModelScope.launch {
+            mutableData.postValue(useCase.getBookDetails(token, id))
         }
     }
 }
