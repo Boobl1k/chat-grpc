@@ -9,6 +9,11 @@
         android:title="@string/mybook" />
 
     <item
+        android:id="@+id/StatisticsFragment"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/statistics" />
+
+    <item
         android:id="@+id/ChatFragment"
         android:icon="@drawable/ic_chat"
         android:title="@string/chat" />

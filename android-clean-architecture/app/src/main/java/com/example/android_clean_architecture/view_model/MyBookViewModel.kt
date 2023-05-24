@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.rabbit.StatisticUpdateConsumer
 import com.example.data.use_case.MyBookUseCaseImpl
 import com.example.domain.dto.MyBookBooksData
+import com.example.domain.dto.StatisticData
 import com.example.domain.use_case.MyBookUseCase
 import kotlinx.coroutines.launch
 
@@ -14,10 +15,15 @@ class MyBookViewModel : ViewModel() {
     private val useCase: MyBookUseCase = MyBookUseCaseImpl()
     val booksDataMutable = MutableLiveData<List<MyBookBooksData>>()
     val bookDetailsDataMutableMap = mutableMapOf<String, MutableLiveData<MyBookBooksData>>()
+    val statisticsDataMutableMap = mutableMapOf<String, MutableLiveData<StatisticData>>()
 
     fun getBooks(token: String) {
         viewModelScope.launch {
-            booksDataMutable.postValue(useCase.getBooks(token))
+            val books = useCase.getBooks(token)
+            booksDataMutable.postValue(books!!)
+            books.forEach {
+                statisticsDataMutableMap[it.id] = MutableLiveData(StatisticData(it.id, 0))
+            }
         }
     }
 
@@ -33,8 +39,7 @@ class MyBookViewModel : ViewModel() {
         val consumer = StatisticUpdateConsumer()
         viewModelScope.launch {
             consumer.subscribe {
-                println(it.bookId)
-                println(it.readCount)
+                statisticsDataMutableMap[it.bookId]?.postValue(it)
             }
         }
     }

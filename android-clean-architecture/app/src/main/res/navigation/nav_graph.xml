@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_AuthFragment_to_MyBookFragment"
             app:destination="@id/MyBookFragment" />
+        <action
+            android:id="@+id/action_AuthFragment_to_statisticsFragment"
+            app:destination="@id/StatisticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/MyBookFragment"
@@ -29,6 +32,9 @@
         <action
             android:id="@+id/action_MyBookFragment_to_AuthFragment"
             app:destination="@id/AuthFragment" />
+        <action
+            android:id="@+id/action_MyBookFragment_to_statisticsFragment"
+            app:destination="@id/StatisticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ChatFragment"
@@ -41,6 +47,24 @@
             app:destination="@id/MyBookFragment" />
         <action
             android:id="@+id/action_ChatFragment_to_AuthFragment"
+            app:destination="@id/AuthFragment" />
+        <action
+            android:id="@+id/action_ChatFragment_to_statisticsFragment"
+            app:destination="@id/StatisticsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/StatisticsFragment"
+        android:name="com.example.android_clean_architecture.StatisticsFragment"
+        android:label="fragment_statistics"
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statisticsFragment_to_ChatFragment"
+            app:destination="@id/ChatFragment" />
+        <action
+            android:id="@+id/action_statisticsFragment_to_MyBookFragment"
+            app:destination="@id/MyBookFragment" />
+        <action
+            android:id="@+id/action_statisticsFragment_to_AuthFragment"
             app:destination="@id/AuthFragment" />
     </fragment>
 </navigation>
