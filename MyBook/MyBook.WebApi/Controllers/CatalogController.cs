@@ -19,10 +19,14 @@ public class CatalogController : Controller
     private readonly AuthorizeManager _auth;
 
     private readonly UserManager<User> _userManager;
-    
-    public CatalogController(ApplicationContext context, AuthorizeManager auth, UserManager<User> userManager)
+
+    private readonly StatisticsService _statisticsService;
+
+    public CatalogController(ApplicationContext context, AuthorizeManager auth, UserManager<User> userManager,
+        StatisticsService statisticsService)
     {
         _userManager = userManager;
+        _statisticsService = statisticsService;
         _context = context;
         _auth = auth;
     }
@@ -67,17 +71,9 @@ public class CatalogController : Controller
 
         if (book is null)
             return NotFound(new {Error = "Unexpected id"});
-        
-        
 
-        if (book.SubType == 1)
-        {
-            if (!await _auth.HasRole(HttpContext,"UserSub") && !await _auth.HasRole(HttpContext,"Admin"))
-            {
-                return StatusCode(403);
-            }
-            
-        }
+        Console.WriteLine($"Reading book [{id}]");
+        await _statisticsService.ProduceStatisticsUpdateMessage(id.ToString());
 
         return Ok(book);
     }

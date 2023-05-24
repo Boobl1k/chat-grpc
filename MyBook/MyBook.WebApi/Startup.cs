@@ -81,6 +81,8 @@ public class Startup
 
         services.AddGraphQLServer()
             .AddQueryType<BooksQuery>();
+
+        services.AddSingleton<StatisticsService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

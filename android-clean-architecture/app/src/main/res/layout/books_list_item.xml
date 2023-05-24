@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -10,5 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Title"/>
+
+    <Button
+        android:id="@+id/open_book_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open"/>
 
 </LinearLayout>

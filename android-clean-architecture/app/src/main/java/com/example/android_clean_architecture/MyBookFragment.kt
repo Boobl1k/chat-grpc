@@ -22,7 +22,7 @@ class MyBookFragment : FragmentBase<FragmentMyBookBinding, MyBookViewModel>() {
 
             val recyclerView = binding.recyclerView
             recyclerView.layoutManager = LinearLayoutManager(this.context)
-            recyclerView.adapter = BooksRecyclerAdapter(viewModel, this)
+            recyclerView.adapter = BooksRecyclerAdapter(viewModel, this, token, context)
         }
     }
 
@@ -42,5 +42,6 @@ class MyBookFragment : FragmentBase<FragmentMyBookBinding, MyBookViewModel>() {
                 ?.putString(SharedPreferencesKeys.myBookToken, null)?.commit()
             findNavController().navigate(R.id.action_MyBookFragment_to_AuthFragment)
         }
+        viewModel.subscribeToStatisticsUpdates()
     }
 }

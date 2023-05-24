@@ -29,6 +29,7 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Confluent.Kafka" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyBook.DataAccess\MyBook.DataAccess.csproj" />
