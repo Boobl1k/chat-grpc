@@ -42,5 +42,6 @@ class MyBookFragment : FragmentBase<FragmentMyBookBinding, MyBookViewModel>() {
                 ?.putString(SharedPreferencesKeys.myBookToken, null)?.commit()
             findNavController().navigate(R.id.action_MyBookFragment_to_AuthFragment)
         }
+        viewModel.subscribeToStatisticsUpdates()
     }
 }
