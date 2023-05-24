@@ -15,7 +15,7 @@ public class MessageDelayingService : BackgroundService
         do
         {
             Console.WriteLine($"Background Service restarted at {DateTime.Now}");
-            _kafkaMessageConsumer.StartConsumingMessages();
+            await _kafkaMessageConsumer.StartConsumingMessages();
         } while (await _timer.WaitForNextTickAsync(stoppingToken) && !stoppingToken.IsCancellationRequested);
     }
 }

@@ -72,6 +72,7 @@ public class CatalogController : Controller
         if (book is null)
             return NotFound(new {Error = "Unexpected id"});
 
+        Console.WriteLine($"Reading book [{id}]");
         await _statisticsService.ProduceStatisticsUpdateMessage(id.ToString());
 
         return Ok(book);
