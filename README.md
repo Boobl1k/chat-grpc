@@ -3,6 +3,9 @@
 ### Run everything in docker:  
 `docker compose up`
 
+### Run everything except web ui 
+`docker compose up mybook consumer api`
+
 ### Local frontend without docker:  
 see `front/README.md`
 
@@ -17,6 +20,11 @@ you need to change hostname in appDbContext
 * 8080 - envoy main
 * 5432 - DB
 * 5100 - mybook api
+* 5050 - consumer
+* 27017 - mongo
+* 5672 - rabbit
+* 15672 - rabbit management web ui
+* 9092 - kafka
 
 
 
