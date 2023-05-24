@@ -4,9 +4,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace consumer.Entities;
 
-public class BookStatistic
+public class BookStatisticMongoModel
 {
-    public BookStatistic(string bookId, int readCount)
+    public BookStatisticMongoModel(string bookId, int readCount)
     {
         BookId = bookId;
         ReadCount = readCount;
@@ -17,4 +17,10 @@ public class BookStatistic
     public string? Id { get; set; }
     public string BookId { get; init; }
     public int ReadCount { get; set; }
+
+    public BookStatisticEntity ToEntity() => new()
+    {
+        BookId = BookId,
+        ReadCount = ReadCount
+    };
 }

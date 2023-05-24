@@ -10,7 +10,8 @@ public class KafkaMessageConsumer
     private const string MongoDbName = "statistics_db";
     private const string MongoCollectionName = "books_statistics";
     private readonly ILogger<KafkaMessageConsumer> _logger;
-    private readonly IMongoCollection<BookStatistic> _booksStatisticCollection;
+    private readonly IMongoCollection<BookStatisticMongoModel> _booksStatisticCollection;
+    private readonly RabbitProducer _rabbitProducer;
 
     private readonly ConsumerConfig _config = new()
     {
@@ -19,12 +20,13 @@ public class KafkaMessageConsumer
         AutoOffsetReset = AutoOffsetReset.Earliest
     };
 
-    public KafkaMessageConsumer(ILogger<KafkaMessageConsumer> logger)
+    public KafkaMessageConsumer(ILogger<KafkaMessageConsumer> logger, RabbitProducer rabbitProducer)
     {
         _logger = logger;
+        _rabbitProducer = rabbitProducer;
         var mongoClient = new MongoClient("mongodb://mongo:27017");
         var mongoDatabase = mongoClient.GetDatabase(MongoDbName);
-        _booksStatisticCollection = mongoDatabase.GetCollection<BookStatistic>(MongoCollectionName);
+        _booksStatisticCollection = mongoDatabase.GetCollection<BookStatisticMongoModel>(MongoCollectionName);
     }
 
     public async Task StartConsumingMessages()
@@ -42,9 +44,11 @@ public class KafkaMessageConsumer
                 var bookId = consumeResult.Message.Value ?? throw new Exception("Дима накосячил опять");
                 _logger.LogInformation("Consumed book id [{bookId}]", bookId);
 
+                BookStatisticMongoModel statisticToPublish;
                 if (await _booksStatisticCollection.CountDocumentsAsync(_ => true) == 0)
                 {
-                    await _booksStatisticCollection.InsertOneAsync(new BookStatistic(bookId, 1));
+                    statisticToPublish = new BookStatisticMongoModel(bookId, 1);
+                    await _booksStatisticCollection.InsertOneAsync(statisticToPublish);
                 }
                 else
                 {
@@ -53,13 +57,16 @@ public class KafkaMessageConsumer
                     {
                         statistic.ReadCount++;
                         await _booksStatisticCollection.ReplaceOneAsync(bs => bs.BookId == bookId, statistic);
+                        statisticToPublish = statistic;
                     }
                     else
                     {
-                        statistic = new BookStatistic(bookId, 1);
+                        statistic = new BookStatisticMongoModel(bookId, 1);
                         await _booksStatisticCollection.InsertOneAsync(statistic);
+                        statisticToPublish = statistic;
                     }
                 }
+                _rabbitProducer.ProduceStatisticsUpdate(statisticToPublish.ToEntity());
             }
         }
         catch (OperationCanceledException)
