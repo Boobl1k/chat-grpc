@@ -18,12 +18,11 @@ class ChatViewModel : ViewModel() {
     }
 
     fun getMessages(token: String) {
-        println("before")
+        messagesDataMutable.postValue(listOf())
         viewModelScope.launch {
             useCase.getMessages(token) {
                 messagesDataMutable.postValue(messagesDataMutable.value!! + listOf(it))
             }
         }
-        println("after")
     }
 }
