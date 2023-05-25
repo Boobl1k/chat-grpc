@@ -34,7 +34,8 @@ class StatisticsRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
         MyViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.statistics_list_item, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.statistics_list_item, parent, false)
         )
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -43,12 +44,14 @@ class StatisticsRecyclerAdapter(
             if (it == null) holder.bookTitleTextView.text = "Loading"
             else {
                 id = it[position].id
-                holder.bookTitleTextView.text = it[position].title
-                holder.readCountTextView.text = "0"
+                if (holder.bookTitleTextView.text == "") {
+                    holder.bookTitleTextView.text = it[position].title
+                    holder.readCountTextView.text = "0"
+                }
             }
         }
-        if(id != null)
-            viewModel.statisticsDataMutableMap[id]!!.observe(lifecycleOwner) {
+        if (id != null)
+            MyBookViewModel.statisticsDataMutableMap[id]!!.observe(lifecycleOwner) {
                 holder.readCountTextView.text = it.readCount.toString()
             }
     }

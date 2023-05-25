@@ -11,18 +11,22 @@ import com.example.domain.use_case.MyBookUseCase
 import kotlinx.coroutines.launch
 
 class MyBookViewModel : ViewModel() {
+    companion object {
+        val statisticsDataMutableMap = mutableMapOf<String, MutableLiveData<StatisticData>>()
+        var consuming = false
+    }
 
     private val useCase: MyBookUseCase = MyBookUseCaseImpl()
     val booksDataMutable = MutableLiveData<List<MyBookBooksData>>()
     val bookDetailsDataMutableMap = mutableMapOf<String, MutableLiveData<MyBookBooksData>>()
-    val statisticsDataMutableMap = mutableMapOf<String, MutableLiveData<StatisticData>>()
 
     fun getBooks(token: String) {
         viewModelScope.launch {
             val books = useCase.getBooks(token)
             booksDataMutable.postValue(books!!)
             books.forEach {
-                statisticsDataMutableMap[it.id] = MutableLiveData(StatisticData(it.id, 0))
+                if (!statisticsDataMutableMap.containsKey(it.id))
+                    statisticsDataMutableMap[it.id] = MutableLiveData(StatisticData(it.id, 0))
             }
         }
     }
@@ -36,10 +40,13 @@ class MyBookViewModel : ViewModel() {
     }
 
     fun subscribeToStatisticsUpdates() {
-        val consumer = StatisticUpdateConsumer()
-        viewModelScope.launch {
-            consumer.subscribe {
-                statisticsDataMutableMap[it.bookId]?.postValue(it)
+        if (!consuming) {
+            consuming = true
+            val consumer = StatisticUpdateConsumer()
+            viewModelScope.launch {
+                consumer.subscribe {
+                    statisticsDataMutableMap[it.bookId]?.postValue(it)
+                }
             }
         }
     }
